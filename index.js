@@ -11,6 +11,9 @@ app.use('/admin', productionAdminRoutes);
 const productRoutes = require('./routes/products');
 app.use(productRoutes);
 
+const shopRoutes = require('./routes/shop');
+app.use(shopRoutes);
+
 const sequelize = require('./util/db')
 
 const models = require('./models/index');
@@ -26,7 +29,7 @@ app.use((req, res, next) => {
 })
 
 sequelize
-    .sync()
+    .sync({force: true})
     .then(() => {
         return models.User.findByPk(1)
     })
@@ -42,7 +45,14 @@ sequelize
     })
         .catch((error) => {
         console.log(error);
-    });
+    })
+    .then((user) => {
+        return user.createCart();
+    })
+    .then((cart) => {
+        console.log(cart)
+        app.listen(3002);
+    })
 
 sequelize
     .authenticate()
