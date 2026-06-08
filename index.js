@@ -41,17 +41,16 @@ sequelize
     })
     .then((user) => {
         console.log(user)
-        app.listen(3002);
-    })
-        .catch((error) => {
-        console.log(error);
-    })
-    .then((user) => {
         return user.createCart();
     })
     .then((cart) => {
         console.log(cart)
-        app.listen(3002);
+        app.listen(3002, () => {
+            console.log('Server started on port 3002');
+        });
+    })
+        .catch((error) => {
+        console.log(error);
     })
 
 sequelize
